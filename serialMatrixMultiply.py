@@ -6,21 +6,30 @@ def main():
 
     m1Value = input("Enter the value you would like to use for Matrix 1:\n")
     m2Value = input("Enter the value you would like to use for Matrix 2:\n")
+    numLoop = int(input("Enter the number of times to run the functions:\n"))
+    doBlocked = input("Do you want to run the blocked version? (Y/N)\n")
+    doBlocked = doBlocked.lower()
 
     m1 = genMatrix(int(size), int(m1Value))
     m2 = genMatrix(int(size), int(m2Value))
 
-    multTime1 = time.monotonic()
-    product = matrixMult(m1, m2)
-    multTime1 = time.monotonic() - multTime1
-    printSubarray(product)
-    print(multTime1)
+    for i in range(numLoop):
+        multTime1 = time.monotonic()
+        product = matrixMult(m1, m2)
+        multTime1 = time.monotonic() - multTime1
+        printSubarray(product)
+        print("Time Elapsed: " + str(multTime1))
 
-    multTime2 = time.monotonic()
-    product2 = blockedMatMult(m1, m2)
-    multTime2 = time.monotonic() - multTime2
-    printSubarray(product2)
-    print(multTime2)
+    if(doBlocked == "n"):
+        exit()
+    for i in range(numLoop):
+        m3 = genMatrix(int(size), int(m1Value))
+        m4 = genMatrix(int(size), int(m2Value))
+        multTime2 = time.monotonic()
+        product2 = blockedMatMult(m3, m4)
+        multTime2 = time.monotonic() - multTime2
+        printSubarray(product2)
+        print("Time Elapsed: " + str(multTime2))
     
 
 """
@@ -28,7 +37,7 @@ Multiplies 2 given matrices and returns the product
 """
 def matrixMult(m1, m2):
     length = len(m1) # 1 length since square matrices only
-    product = [[0] * length for i in range(length)] # create resulting matrix 
+    product = genMatrix(length, 0) # create resulting matrix 
 
     for i in range (length):    # keeps track of m1 rows
         for j in range(length): # keeps track of m2 columns    
@@ -55,6 +64,7 @@ def blockedMatMult(m1, m2):
                     for k in range(kk, k_end_val): 
                         sum = sum + m1[i][k] * m2[k][j] 
                     output[i][j] = sum 
+    print("DONE WITH BLOCKED")
 
 if __name__ == '__main__':
     main()
